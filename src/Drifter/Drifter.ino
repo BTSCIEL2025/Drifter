@@ -19,6 +19,7 @@ void loop() {
 		Serial.println("0");
 	}
 	delay(1000);
-
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(500);
 }
 
