@@ -20,11 +20,19 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Drifter.ino" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="__vm\.Drifter.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="controller.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Drifter.ino">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller.ino">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
