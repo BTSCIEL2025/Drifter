@@ -6,10 +6,18 @@
 
 // the setup function runs once when you press reset or power the board
 void setup() {
-
+	Serial.begin(9600);
+	pinMode(6, INPUT);
+	digitalWrite(6, LOW);
 }
 
-// the loop function runs over and over again until power down or reset
 void loop() {
-  
+	if (digitalRead(6) == HIGH) {
+		Serial.println("1");
+	}
+	else {
+		Serial.println("0");
+	}
+	delay(1000);
 }
+
