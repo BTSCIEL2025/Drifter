@@ -12,7 +12,7 @@
     <Filter Include="Modules">
       <UniqueIdentifier>{1e4f8c81-8230-40a4-9dc0-eb53f86bc710}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Modules\Manette">
+    <Filter Include="Modules\ManetteTest">
       <UniqueIdentifier>{cd6f308f-74ea-4aec-b908-16010db83f46}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -20,21 +20,22 @@
     <None Include="src\arduino folders read me.txt">
       <Filter>Misc Files</Filter>
     </None>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Drifter.ino">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ManetteTest\Manette.ino">
-      <Filter>Modules\Manette</Filter>
+      <Filter>Modules\ManetteTest</Filter>
     </ClCompile>
-    <ClCompile Include="src\ManetteTest\StartManetteTest.ino">
-      <Filter>Modules\Manette</Filter>
+    <ClCompile Include="src\ManetteTest\ManetteTest.ino">
+      <Filter>Modules\ManetteTest</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ManetteTest\ManetteTest.h">
-      <Filter>Modules\Manette</Filter>
+      <Filter>Modules\ManetteTest</Filter>
     </ClInclude>
     <ClInclude Include="__vm\.Drifter.vsarduino.h" />
   </ItemGroup>

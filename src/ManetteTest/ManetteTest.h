@@ -1,4 +1,4 @@
- #ifndef MANETTE_H
+#ifndef MANETTE_H
 #define MANETTE_H
 
 
@@ -9,8 +9,6 @@
 typedef const __FlashStringHelper* FlashStr;
 typedef const byte* PGM_BYTES_P;
 #define PSTR_TO_F(s) reinterpret_cast<const __FlashStringHelper *> (s)
-
-
 
 boolean haveController = false;
 
