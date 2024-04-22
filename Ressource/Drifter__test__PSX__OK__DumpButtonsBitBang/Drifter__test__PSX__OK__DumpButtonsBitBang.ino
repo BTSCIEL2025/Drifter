@@ -1,36 +1,3 @@
-/*******************************************************************************
- * This file is part of PsxNewLib.  
- 
-fichier:   Drifter__test__PSX__OK__DumpButtonsBitBang.ino   LS
-
-fct ok le 21/03/2024 sur proto bois.
-                                           *
- *                                                                             *
- * Copyright (C) 2019-2020 by SukkoPera <software@sukkology.net>               *
- *                                                                             *
- * PsxNewLib is free software: you can redistribute it and/or                  *
- * modify it under the terms of the GNU General Public License as published by *
- * the Free Software Foundation, either version 3 of the License, or           *
- * (at your option) any later version.                                         *
- *                                                                             *
- * PsxNewLib is distributed in the hope that it will be useful,                *
- * but WITHOUT ANY WARRANTY; without even the implied warranty of              *
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the               *
- * GNU General Public License for more details.                                *
- *                                                                             *
- * You should have received a copy of the GNU General Public License           *
- * along with PsxNewLib. If not, see http://www.gnu.org/licenses.              *
- *******************************************************************************
- *
- * This sketch will dump to serial whatever is done on a PSX controller. It is
- * an excellent way to test that all buttons/sticks are read correctly.
- *
- * It's missing support for analog buttons, that will come in the future.
- *
- * This example drives the controller by bitbanging the protocol, there is
- * another similar one using the hardware SPI support.
- */
-
 #include <DigitalIO.h>
 #include <PsxControllerBitBang.h>
 
