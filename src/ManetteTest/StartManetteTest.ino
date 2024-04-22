@@ -1,12 +1,6 @@
-/*
- Name:		Drifter.ino
- Created:	19/04/2024 09:43:12
- Author:	gab
-*/
-
-#include <DigitalIO.h>
+﻿#include <DigitalIO.h>
 #include <avr/pgmspace.h>
-#include "src/ManetteTest/Manette.h"
+#include "ManetteTest.h"
 
 PsxControllerBitBang<PIN_PS2_ATT, PIN_PS2_CMD, PIN_PS2_DAT, PIN_PS2_CLK> psx;
 

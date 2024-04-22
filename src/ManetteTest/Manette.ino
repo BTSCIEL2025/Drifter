@@ -1,4 +1,4 @@
-#include "Manette.h"
+#include "ManetteTest.h"
 
 byte psxButtonToIndex(PsxButtons psxButtons) {
 	byte i;

@@ -16,6 +16,7 @@
 #include <arduino.h>
 #include <pins_arduino.h> 
 #include "..\Drifter.ino"
-#include "..\src\Manette\Manette.ino"
+#include "..\src\ManetteTest\Manette.ino"
+#include "..\src\ManetteTest\StartManetteTest.ino"
 #endif
 #endif

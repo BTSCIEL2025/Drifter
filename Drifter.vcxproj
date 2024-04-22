@@ -88,7 +88,11 @@
   <ItemGroup>
     <None Include="src\arduino folders read me.txt">
     </None>
-    <ClCompile Include="src\Manette\Manette.ino">
+    <ClCompile Include="src\ManetteTest\Manette.ino">
+      <FileType>CppCode</FileType>
+      <DeploymentContent>true</DeploymentContent>
+    </ClCompile>
+    <ClCompile Include="src\ManetteTest\StartManetteTest.ino">
       <FileType>CppCode</FileType>
       <DeploymentContent>true</DeploymentContent>
     </ClCompile>
@@ -97,7 +101,7 @@
     <ProjectCapability Include="VisualMicro" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Manette\Manette.h" />
+    <ClInclude Include="src\ManetteTest\ManetteTest.h" />
     <ClInclude Include="__vm\.Drifter.vsarduino.h" />
   </ItemGroup>
   <PropertyGroup>
