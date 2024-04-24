@@ -1,5 +1,5 @@
-#ifndef MANETTE_H
-#define MANETTE_H
+#ifndef MANETTETEST_H
+#define MANETTETEST_H
 
 #include <DigitalIO.h>
 #include <PsxControllerBitBang.h>
