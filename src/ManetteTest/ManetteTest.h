@@ -1,7 +1,6 @@
 #ifndef MANETTE_H
 #define MANETTE_H
 
-
 #include <DigitalIO.h>
 #include <PsxControllerBitBang.h>
 

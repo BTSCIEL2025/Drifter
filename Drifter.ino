@@ -4,9 +4,13 @@
  Author:	gab
 */
 
+#include <PsxControllerBitBang.h>
+#include <PsxControllerHwSpi.h>
+#include <PsxNewLib.h>
 #include <DigitalIO.h>
 #include <avr/pgmspace.h>
-#include "src/ManetteTest/Manette.h"
+#include "src/ManetteTest/ManetteTest.h"
+
 
 PsxControllerBitBang<PIN_PS2_ATT, PIN_PS2_CMD, PIN_PS2_DAT, PIN_PS2_CLK> psx;
 
