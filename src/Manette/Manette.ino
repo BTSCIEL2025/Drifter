@@ -1,11 +1,7 @@
 #include <avr/pgmspace.h> 
 #include <DigitalIO.h>
-#include "ManetteTest.h"
+#include "Manette.h"
 
-byte Manette::jlx = 0;
-byte Manette::jly = 0;
-byte Manette::jrx = 0;
-byte Manette::jry = 0;
 
 Manette manette;
 
