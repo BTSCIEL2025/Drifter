@@ -18,13 +18,13 @@ byte Manette::jrx = 0;
 byte Manette::jry = 0;
 
 void setup() {
-	fastPinMode(PIN_BUTTONPRESS, OUTPUT);
+  Serial.begin(115200);
+  delay(300);
+  Serial.println("Début du setup -----------------------------------------");
+	/*fastPinMode(PIN_BUTTONPRESS, OUTPUT);
 	fastPinMode(PIN_HAVECONTROLLER, OUTPUT);
-
-	delay(300);
-
-	Serial.begin(115200);
-	Serial.println(F("Ready!"));
+  Serial.println("Fin du setup -----------------------------------------\n");
+	Serial.println(F("Ready!"));*/
 }
 
 ///////////////////////////////////////////////////////////////////
