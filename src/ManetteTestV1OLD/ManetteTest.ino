@@ -1,6 +1,7 @@
-﻿#include <DigitalIO.h>
-#include <avr/pgmspace.h>
+#include <avr/pgmspace.h> 
+#include <DigitalIO.h>
 #include "ManetteTest.h"
+
 
 PsxControllerBitBang<PIN_PS2_ATT, PIN_PS2_CMD, PIN_PS2_DAT, PIN_PS2_CLK> psx;
 
@@ -73,6 +74,9 @@ void loop() {
 			fastDigitalWrite(PIN_BUTTONPRESS, !!psx.getButtonWord());
 			dumpButtons(psx.getButtonWord());
 
+       
+      testDump();
+
 			byte lx, ly;
 			psx.getLeftAnalog(lx, ly);
 			if (lx != slx || ly != sly)
@@ -93,4 +97,5 @@ void loop() {
 	}
 	delay(1000 / 60);
 }
+
 

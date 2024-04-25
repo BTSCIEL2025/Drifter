@@ -12,10 +12,10 @@ typedef const byte* PGM_BYTES_P;
 boolean haveController = false;
 
 // These can be changed freely when using the bitbanged protocol
-const byte PIN_PS2_ATT = 8; // 10;
-const byte PIN_PS2_CMD = 7;  //11;
-const byte PIN_PS2_DAT = 6;  //12;
-const byte PIN_PS2_CLK = 9;  // 13;
+const byte PIN_PS2_ATT = 8; // Attention;
+const byte PIN_PS2_CMD = 7;  // Commande;
+const byte PIN_PS2_DAT = 6;  // Donnée;
+const byte PIN_PS2_CLK = 9;  // Clock;
 
 const byte PIN_BUTTONPRESS = A0;
 const byte PIN_HAVECONTROLLER = A1;
@@ -68,6 +68,43 @@ const char* const controllerTypeStrings[PSCTRL_MAX + 1] PROGMEM = {
 	ctrlTypeDsWireless,
 	ctrlTypeGuitHero,
 	ctrlTypeOutOfBounds
+};
+
+class Manette {
+public:
+    static byte jlx, jly, jrx, slx, sly, srx, sry;
+    PsxControllerBitBang <PIN_PS2_ATT, PIN_PS2_CMD, PIN_PS2_DAT, PIN_PS2_CLK> controller;
+
+    void setupController() {
+        if (controller.begin()) {
+            haveController = true;
+        } else {
+            haveController = false;
+        }
+    }
+
+    byte getX() {
+            // Jlx prend la valeur de lx
+            jlx = controller.getLeftAnalog(PsxControllerBitBang <PIN_PS2_ATT, PIN_PS2_CMD, PIN_PS2_DAT, PIN_PS2_CLK>::LX);
+            return jlx;
+    }
+
+    byte getY() {
+            // Jly prend la valeur de ly
+            jly = controller.getLeftAnalog(PsxControllerBitBang <PIN_PS2_ATT, PIN_PS2_CMD, PIN_PS2_DAT, PIN_PS2_CLK>::LY);
+            return jly;
+    }
+    byte getZ() {
+            // Jrx prend la valeur de rx
+            jrx = controller.getRightAnalog(PsxControllerBitBang <PIN_PS2_ATT, PIN_PS2_CMD, PIN_PS2_DAT, PIN_PS2_CLK>::RX);
+            return jrx;
+    }
+    byte getBouton(){
+        if (haveController) {
+            return PsxButtons(controller.getButtonWord());
+        }
+        return 0;
+    }
 };
 
 #endif
