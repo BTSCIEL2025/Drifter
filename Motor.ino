@@ -1,4 +1,4 @@
-#include "Motor.h"
+#include "src/Motor/Motor.h"
 
 
 /*Motor::Motor() 
@@ -23,12 +23,11 @@ void Motor::init(void) {
 	
 	// majsortie();
 }
-void Motor::maj(void) {
-	somme[0] = A + B + C;   Sortie_Pwm[0] = map(somme[0], -390, 390, MIN_IMP[0], MAX_IMP[0]);
-	somme[1] = A + B - C;   Sortie_Pwm[1] = map(somme[1], -390, 390, MIN_IMP[1], MAX_IMP[1]);
-	somme[2] = A - B - C;   Sortie_Pwm[2] = map(somme[2], -390, 390, MIN_IMP[2], MAX_IMP[2]);
-	somme[3] = A - B + C;   Sortie_Pwm[3] = map(somme[3], -390, 390, MIN_IMP[3], MAX_IMP[3]);
-	// a changer avec manette.get(x)
+void Motor::maj(char A, char B, char C) {
+	somme[0] = A + B + C;   Sortie_Pwm[0] = map(somme[0], 0, 255, MIN_IMP[0], MAX_IMP[0]);
+	somme[1] = A + B - C;   Sortie_Pwm[1] = map(somme[1], 0, 255, MIN_IMP[1], MAX_IMP[1]);
+	somme[2] = A - B - C;   Sortie_Pwm[2] = map(somme[2], 0, 255, MIN_IMP[2], MAX_IMP[2]);
+	somme[3] = A - B + C;   Sortie_Pwm[3] = map(somme[3], 0, 255, MIN_IMP[3], MAX_IMP[3]);
 	Serial.println(Sortie_Pwm[0]);
 	Serial.println(Sortie_Pwm[1]);
 	Serial.println(Sortie_Pwm[2]);

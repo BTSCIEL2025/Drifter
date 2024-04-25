@@ -2,13 +2,16 @@
  Name:		Drifter.ino
  Created:	19/04/2024 09:43:12
 */
-
+// Importation des différentes libs
 #include <DigitalIO.h>
 #include <avr/pgmspace.h>
 #include "src/Manette/Manette.h"
-#include "src/"
+#include "src/Motor/Motor.h"
 
+//définitions des objets et des constantes/variables
 Manette manette;
+Motor motor;
+
 byte Manette::jlx = 0;
 byte Manette::jly = 0;
 byte Manette::jrx = 0;

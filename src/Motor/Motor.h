@@ -9,11 +9,10 @@ class Motor
 public:
 	Motor();
 	
-	void maj(void);
-  void majsortie();
-	int A = 0;
-	int B = 0;
-	int C = -128;
+	void maj(char, char, char);
+  	void majsortie();
+  
+	
 
 private:
 	
