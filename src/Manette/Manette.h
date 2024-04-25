@@ -72,19 +72,24 @@ const char* const controllerTypeStrings[PSCTRL_MAX + 1] PROGMEM = {
 
 class Manette {
 public:
-    static byte jlx, jly, jrx, jry, slx, sly, srx, sry;
+    static byte jlx, jly, jrx, jry;
     PsxControllerBitBang <PIN_PS2_ATT, PIN_PS2_CMD, PIN_PS2_DAT, PIN_PS2_CLK> controller;
 
     void setupController() {
-        if (controller.begin()) {
-            controller.enterConfigMode();
-            controller.enableAnalogSticks();
-            controller.exitConfigMode();
-            haveController = true;
-        } else {
-            haveController = false;
-        }
+    if (controller.begin()) {
+        Serial.println("Controller started");
+        controller.enterConfigMode();
+        Serial.println("Entered config mode");
+        controller.enableAnalogSticks();
+        Serial.println("Analog sticks enabled");
+        controller.exitConfigMode();
+        Serial.println("Exited config mode");
+        haveController = true;
+    } else {
+        Serial.println("Controller failed to start");
+        haveController = false;
     }
+}
 
     byte getX() {
         updateJoystickValues();
@@ -100,8 +105,6 @@ public:
         updateJoystickValues();
         return jrx;
     }
-
-
 
     byte getButton() {
         if (haveController) {
@@ -160,13 +163,37 @@ public:
     }
 }
 private:
+    static byte slx, sly, srx, sry;
+    void dumpAnalog (const char *str, const byte x, const byte y) {
+      Serial.print (str);
+      Serial.print (F(" x = "));
+      Serial.print (x);
+      Serial.print (F(", y = "));
+      Serial.println (y);
+    }
+
     // Mise à jour des valeurs des joysticks depuis le contrôleur
     void updateJoystickValues() {
-        if (haveController && controller.read()) {
+      byte lx, ly;
+      controller.getLeftAnalog(lx, ly);  // Directly get values
+      Serial.print("Left X: "); Serial.println(lx);
+      Serial.print("Left Y: "); Serial.println(ly);
+      //slx = lx;
+      //sly = ly;
+}
+      
+        /*if (haveController && controller.read()) {
             controller.getLeftAnalog(jlx, jly);
             controller.getRightAnalog(jrx, jry);
-        }
-    }
+            Serial.print("Left X: "); Serial.println(jlx);
+            Serial.print("Left Y: "); Serial.println(jly);
+        }*/
+    
 };
+
+byte Manette::slx = 0;
+byte Manette::sly = 0;
+byte Manette::srx = 0;
+byte Manette::sry = 0;
 
 #endif
