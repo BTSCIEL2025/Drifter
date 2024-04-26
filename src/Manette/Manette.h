@@ -9,7 +9,7 @@ typedef const __FlashStringHelper* FlashStr;
 typedef const byte* PGM_BYTES_P;
 #define PSTR_TO_F(s) reinterpret_cast<const __FlashStringHelper *> (s)
 
-boolean haveController = false;
+
 
 // These can be changed freely when using the bitbanged protocol
 const byte PIN_PS2_ATT = 8; // Attention
@@ -69,14 +69,19 @@ const char* const controllerTypeStrings[PSCTRL_MAX + 1] PROGMEM = {
     ctrlTypeGuitHero,
     ctrlTypeOutOfBounds
 };
+    byte jlx, jly, jrx, jry, slx, sly, srx, sry;
+  	byte rx, ry, lx, ly ;  // deplacement LS
 
+//======================================================================================
 class Manette {
 public:
-    static byte jlx, jly, jrx, jry;
-    PsxControllerBitBang <PIN_PS2_ATT, PIN_PS2_CMD, PIN_PS2_DAT, PIN_PS2_CLK> controller;
+    boolean haveController = false;
 
+
+    PsxControllerBitBang <PIN_PS2_ATT, PIN_PS2_CMD, PIN_PS2_DAT, PIN_PS2_CLK> controller;
+    //---------------------------------------------
     void setupController() {
-    if (controller.begin()) {
+      if (controller.begin()) {
         Serial.println("Controller started");
         controller.enterConfigMode();
         Serial.println("Entered config mode");
@@ -85,34 +90,21 @@ public:
         controller.exitConfigMode();
         Serial.println("Exited config mode");
         haveController = true;
-    } else {
+      } else 
+      {
         Serial.println("Controller failed to start");
-        haveController = false;
+        haveController = true;
+      }
     }
-}
-
-    byte getX() {
-        updateJoystickValues();
-        return jlx;
-    }
-
-    byte getY() {
-        updateJoystickValues();
-        return jly;
-    }
-
-    byte getZ() {
-        updateJoystickValues();
-        return jrx;
-    }
-
+    //---------------------------------------------
     byte getButton() {
         if (haveController) {
             return PsxButtons(controller.getButtonWord());
         }
         return 0;
     }
-        byte psxButtonToIndex(PsxButtons psxButtons) {
+    //---------------------------------------------
+    byte psxButtonToIndex(PsxButtons psxButtons) {
       byte i;
 
       for (i = 0; i < PSX_BUTTONS_NO; ++i) {
@@ -126,6 +118,7 @@ public:
       return i;
     }
 
+    //---------------------------------------------
     FlashStr getButtonName(PsxButtons psxButton) {
       FlashStr ret = F("");
 
@@ -137,6 +130,8 @@ public:
 
       return ret;
     }
+    
+    //---------------------------------------------
     void dumpButtons(PsxButtons psxButtons) {
     static PsxButtons lastB = 0;
 
@@ -146,7 +141,7 @@ public:
       Serial.print(F("Pressed: "));
 
       for (byte i = 0; i < PSX_BUTTONS_NO; ++i) {
-      byte b = psxButtonToIndex(psxButtons);
+        byte b = psxButtonToIndex(psxButtons);
         if (b < PSX_BUTTONS_NO) {
           PGM_BYTES_P bName = reinterpret_cast<PGM_BYTES_P> (pgm_read_ptr(&(psxButtonNames[b])));
           Serial.print(PSTR_TO_F(bName));
@@ -156,14 +151,13 @@ public:
 
         if (psxButtons != 0) {
           Serial.print(F(", "));
+          }
         }
-      }
 
-      Serial.println();
+        Serial.println();
+      }
     }
-}
-private:
-    static byte slx, sly, srx, sry;
+  //=======================================================================================
     void dumpAnalog (const char *str, const byte x, const byte y) {
       Serial.print (str);
       Serial.print (F(" x = "));
@@ -171,31 +165,49 @@ private:
       Serial.print (F(", y = "));
       Serial.println (y);
     }
+//=======================================================================================
 
-    // Mise à jour des valeurs des joysticks depuis le contrôleur
-    void updateJoystickValues() {
-      byte lx, ly;
-      controller.getLeftAnalog(lx, ly);  // Directly get values
-      //Assigns values to 
-      Serial.print(lx);
-      Serial.print("  ");
-      Serial.print(ly);
-      //slx = lx;
-      //sly = ly;
-}
-      
-        /*if (haveController && controller.read()) {
-            controller.getLeftAnalog(jlx, jly);
-            controller.getRightAnalog(jrx, jry);
-            Serial.print("Left X: "); Serial.println(jlx);
-            Serial.print("Left Y: "); Serial.println(jly);
-        }*/
-    
+    void updateAnalogSticks(){
+  //    byte lx, ly;
+			controller.getLeftAnalog (lx, ly);
+      // Serial.print("début condition si gauche");
+
+
+      Serial.print("  updateAnalogSticks:  lx: ");    Serial.print(lx);
+      Serial.print("   slx: ");   Serial.print(slx);
+      Serial.print("   ly: ");    Serial.print(ly);
+      Serial.print("   sly: ");   Serial.print(slx);   	
+
+
+
+
+
+
+			if (lx != slx || ly != sly){  // si different de la valeur précedante aaa 
+				//dumpAnalog ("Left", lx, ly);  
+				slx = lx;   // on save la derniere valeur 
+				sly = ly;
+        Serial.print("MAJ valeurs gauche     ");
+			}
+
+//			byte rx, ry;
+			controller.getRightAnalog (rx, ry);
+      // Serial.print("début condition si droite");
+			if (rx != srx || ry != sry) {     // si different de la valeur précedante aaa
+				//dumpAnalog ("Right", rx, ry);   // on affiche
+				srx = rx;
+				sry = ry;
+        Serial.print("MAJ valeurs droite     ");
+			}
+    }
+			
+    byte getX(void){  return slx;  }
+    byte getY(void){  return sly;  }
+    byte getZ(void){  return srx;  }
+
+private:
+
 };
 
-byte Manette::slx = 0;
-byte Manette::sly = 0;
-byte Manette::srx = 0;
-byte Manette::sry = 0;
 
 #endif
