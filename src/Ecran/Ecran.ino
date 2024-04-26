@@ -7,7 +7,7 @@
 
 
 void Ecran::initial() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   // Initialisation de l'écran OLED
   if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3D)) {
     Serial.println(F("Écran SSD1306 non trouvé"));

@@ -3,21 +3,24 @@
  Created:	19/04/2024 09:43:12
 */
 // Importation des différentes libs
-#include <DigitalIO.h>
 #include <Arduino.h>
+#include <DigitalIO.h>
+#include <avr/io.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #include <avr/pgmspace.h>
 #include "src/Manette/Manette.h"
 #include "src/Motor/Motor.h"
-#include "src/Ecran/Ecran.h"
 #include "src/Ecran/Automate.h"
-#include "src/Boutons/Bouton.h"
+#include "src/Ecran/Ecran.h"
+#include "src/Bouton/Bouton.h"
 Adafruit_PWMServoDriver pca = Adafruit_PWMServoDriver(0x40);
 
 //////////////////////////////////// DEFINITIONS //////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
+#define NUM_DIGITAL_PINS 20
+
 Manette manette;
 Motor motor(&pca);
 Bouton monclav;
