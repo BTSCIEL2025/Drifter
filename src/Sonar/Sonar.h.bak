@@ -33,7 +33,7 @@ class Sonar
 {
 public:
 	// Constructeurs
-	
+	/*
 	void Sonar() {
 	etat = 0;
 	orientation = 270;
@@ -47,7 +47,7 @@ public:
 	}                //initialisé à 10 valeurs sur 270° */
 
 
-    
+
 	void Sonar(int angle, int nbMes, int inter,Adafruit_PWMServoDriver *pwm) {
 	etat = 0;
 	dateDebut = millis();
@@ -61,115 +61,115 @@ public:
 	pwm = pwm;
 	}
 	// Getters
-	int getOrientation() const
+	int Sonar::getOrientation() const
 	{
 		return orientation;
 	}
 
-	bool getEtat() const
+	bool Sonar::getEtat() const
 	{
 		return etat;
 	}
 
-	int getNbMesure() const{
+	int Sonar::getNbMesure() const{
 	return nbMesure;
 	}
 
-	int getLecture(int i) const
+	int Sonar::getLecture(int i) const
 	{
 		return lecture[i];
 	}
 
-	long getDateDebut() const
+	long Sonar::getDateDebut() const
 	{
 		return dateDebut;
 	}
 
-	int getIntervalle() const
+	int Sonar::getIntervalle() const
 	{
 		return intervalle;
 	}
 
-	int getAvance() const
+	int Sonar::getAvance() const
 	{
 		return avance;
 	}
 
-	int getFeu() const
+	int Sonar::getFeu() const
 	{
 		return feu;
 	}
 
-	int getSens() const
+	int Sonar::getSens() const
 	{
 		return sens;
 	}
 
-	int getNbTour() const
+	int Sonar::getNbTour() const
 	{
 	return nbTours;
 	}
 
 	//Setters
-	void setOrientation(int orientation)
+	void Sonar::setOrientation(int orientation)
 	{
 	this->orientation = orientation;
 	}
 
-	void setEtat(bool etat)
+	void Sonar::setEtat(bool etat)
 	{ 
 	this->etat = etat;
 	}
 
-	void setNbMesure(int nbM){
+	void Sonar::setNbMesure(int nbM){
 	this->nbMesure = nbM;
 	}
 
-	void setLecture(int rang, int val)
+	void Sonar::setLecture(int rang, int val)
 	{
 	this->lecture[rang] = val;
 	}
 
-	void setDateDebut(long date)
+	void Sonar::setDateDebut(long date)
 	{
 	this->dateDebut = date;
 	}
 
-	void setIntervalle(int intervalle)
+	void Sonar::setIntervalle(int intervalle)
 	{
 	this->intervalle = intervalle;
 	}
 
-	void setAvance(int avance)
+	void Sonar::setAvance(int avance)
 	{
 	this->avance = avance;
 	}
 
-	void setFeu(int feu)
+	void Sonar::setFeu(int feu)
 	{
 	this->feu = feu;
 	}
 
-	void setSens(int sens)
+	void Sonar::setSens(int sens)
 	{ 
 	this->sens = sens;
 	}
 
-	void setNbTour(int tour)
+	void Sonar::setNbTour(int tour)
 	{
 	this->nbTours = tour;
 	}
 
 
 	//Autres fonctions
-	int pulseWidth(int angle) {
+	int Sonar::pulseWidth(int angle) {
 		int pulse_wide, analog_value;
 		pulse_wide = map(angle, 0, getOrientation(), MIN_PULSE_WIDTH, MAX_PULSE_WIDTH);
 		analog_value = int(float(pulse_wide) / 1000000 * FREQUENCY * 4096);
 		return analog_value;
 	}
 
-	void miseOn(){
+	void Sonar::miseOn(){
 		setEtat(1);
 		pwm->begin(); 
 		pwm->setPWMFreq(FREQUENCY);
@@ -177,13 +177,13 @@ public:
 		setDateDebut(millis());                                         // on indique le temps du lancement
 	}  
 
-	void miseOff(){
+	void Sonar::miseOff(){
 		setEtat(0);
 		pwm->setPWM(CANALSERVO, 0, pulseWidth(135));   // on le remet a son angle d'origine   
 		setSens(1);
 	}   
 
-	void maj(){
+	void Sonar::maj(){
 		if(this->etat){
 			//Permet de faire les mesures dans les deux sens et d'incrementer le nombre de tour
 			if(getAvance() + 1 == getNbMesure() && getSens()==1){                     //+1 car on part de 0 et pas de 1
@@ -209,11 +209,11 @@ public:
 		}
 	} 
 
-	int lireLum(){
+	int Sonar::lireLum(){
 		return analogRead(PIN_CAPT_LUM);
 	}          
 
-	int moyLum(){
+	int Sonar::moyLum(){
 		int moy = 0;
 		if(getNbTour()==0){                                                   //si le tableau n'a pas encore été complettement remplit
 			for(int i = 0; i<getAvance() + 1;i++){
@@ -228,7 +228,7 @@ public:
 		return moy/getNbMesure();
 	} 
 
-	int maxLum(){
+	int Sonar::maxLum(){
 		int max = getLecture(0);
 		if(getNbTour()==0){                                                   //si le tableau n'a pas encore étécomplettement remplit
 			for(int i = 1; i<getAvance() + 1;i++){
@@ -246,7 +246,7 @@ public:
 		return max;
 	} 
 
-	int rangLumMax(){
+	int Sonar::rangLumMax(){
 		for(int i = 0; i<getNbMesure() ;i++){
 			if(getLecture(i) == maxLum()){
 			return i;
@@ -256,7 +256,7 @@ public:
 	}
 
 
-	int oFeu(){
+	int Sonar::oFeu(){
 		if(maxLum()-moyLum() > DELTAOFEU){
 			setFeu(rangLumMax() * getOrientation() / getNbMesure());        //getOrientation / getNbMesure correspond à l'intervalle en degres entre deux mesures
 		}
@@ -275,6 +275,6 @@ private:
   int feu;                //indique l'angle du feu, -1 si il n'y a pas le feu
   int sens;               //horaire 1 ou anti-horaire -1
   int nbTours;            //Nombre de tours complets qu'a fait le sonar 
-  Adafruit_PWMServoDriver &pwm; //variable nécésaire au servo moteur
+  Adafruit_PWMServoDriver *pwm; //variable nécésaire au servo moteur
 };
 #endif // !SONAR_H

@@ -15,8 +15,10 @@
 #include "src/EAB/Automate.h"
 #include "src/EAB/Ecran.h"
 #include "src/EAB/Bouton.h"
-Adafruit_PWMServoDriver pca = Adafruit_PWMServoDriver(0x40);
+#include "src/Sonar/Sonar.h"
+using namespace std;
 
+Adafruit_PWMServoDriver pca = Adafruit_PWMServoDriver(0x40);
 //////////////////////////////////// DEFINITIONS //////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
 #define NUM_DIGITAL_PINS 20
@@ -26,6 +28,7 @@ Motor motor(&pca);
 Bouton monclav;
 Ecran monecran;
 Automate monauto;
+Sonar sonar;
 
 unsigned long lastTransitionTime = 0;
 const unsigned long debounceDelay = 200;
@@ -37,8 +40,7 @@ void setup() {
   delay(300);
   Serial.println("Début du setup -----------------------------------------");
     // INITIALISATION ECRAN OLED
-  monecran.initial();
-  monecran.erase();
+  
 
   // INITIALISATION MOTEURS ET MANETTE 
 	fastPinMode(PIN_BUTTONPRESS, OUTPUT);
@@ -51,7 +53,12 @@ void setup() {
   // arret des moteurs(128 étant le point 0):
   motor.maj(128, 128, 128);
   motor.majsortie();
-
+  // Sonar
+  sonar.miseOn();/*
+  // Ecran
+  monecran.initial();
+  monecran.erase();
+  */ //Mise en attente du Sonar et de l'écran, pb d'organisation
   Serial.println("Fin du setup -----------------------------------------\n");
 	Serial.println(F("Ready!"));
 }
@@ -193,9 +200,8 @@ int transition = monclav.readButton();
 
         break;
     }*/
-    monecran.erase();
-    monecran.afficher(etat);
-    Serial.println(etat);
+    sonar.maj();
+    
 
 
 
