@@ -1,25 +1,36 @@
-#include "Ecran.h"
+#ifndef ECRAN_H
+#define ECRAN_H
+
 #include <Arduino.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
+#include "Automate.h"
 
+#define SCREEN_WIDTH 128 // Largeur de l'écran OLED en pixels
+#define SCREEN_HEIGHT 64 // Hauteur de l'écran OLED en pixels
 
+#define OLED_RESET -1 // Reset de l'écran OLED
 
-void Ecran::initial() {
-  Serial.begin(115200);
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET); // Configuration de l'écran
+
+class Ecran {
+  private: 
+    Automate automate;
+
+  public:
+    void initial() {
+      Serial.begin(115200);
   // Initialisation de l'écran OLED
   if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3D)) {
     Serial.println(F("Écran SSD1306 non trouvé"));
     for (;;);
   }
 }
-
-void Ecran::erase() {
-  display.clearDisplay();
+    void erase() {
+      display.clearDisplay();
 }
-
-void Ecran::afficher(int etat) {
+    void afficher(int etat) {
   switch(etat) {
     case 0:
       display.setTextSize(1); // Taille du texte
@@ -303,4 +314,5 @@ void Ecran::afficher(int etat) {
 }
 display.display();
 }
-
+};
+#endif
