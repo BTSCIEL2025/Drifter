@@ -30,6 +30,11 @@ void setup() {
   //FIN INTIALISATION MOTEURS ET MANETTE
 
 	delay(1000);
+  // arret des moteurs:
+  motor.maj(128, 128, 128);
+  motor.majsortie();
+
+
   Serial.println("Fin du setup -----------------------------------------\n");
 	Serial.println(F("Ready!"));
 }
@@ -91,14 +96,14 @@ void loop() {
 		} 
     else 
     {
-	// LS   		fastDigitalWrite (PIN_BUTTONPRESS, !!psx.getButtonWord ());
+			fastDigitalWrite (PIN_BUTTONPRESS, !!manette.controller.getButtonWord ());
 			manette.dumpButtons (manette.controller.getButtonWord ());  
 
 			byte lx, ly;
 			manette.controller.getLeftAnalog (lx, ly);
 			if (lx != slx || ly != sly)  // si different de la valeur précedante aaa
       {
-				manette.dumpAnalog ("Left", lx, ly);  
+				//manette.dumpAnalog ("Left", lx, ly);  
 				slx = lx;   // on save la derniere valeur 
 				sly = ly;
 			}
@@ -106,19 +111,42 @@ void loop() {
 			byte rx, ry;
 			manette.controller.getRightAnalog (rx, ry);
 			if (rx != srx || ry != sry) {     // si different de la valeur précedante aaa
-				manette.dumpAnalog ("Right", rx, ry);   // on affiche
+				//manette.dumpAnalog ("Right", rx, ry);   // on affiche
 				srx = rx;
 				sry = ry;
 			}
 		}
 	}
-  delay (1000 / 60);
+  // LS delay (1000 / 60);
 
-  Serial.print("\n   lx: "); Serial.print(manette.getX());
-  Serial.print("   ly: "); Serial.print(manette.getY());
-  Serial.print("   rx: "); Serial.print(manette.getZ());
-  motor.maj(slx, sly, srx);
+  Serial.print("\nlx="); Serial.print(manette.getX()); // get X joystick gauche (pivot)
+  Serial.print(" ly="); Serial.print(manette.getY()); // get Y joystick gauche (avance)
+  Serial.print(" rx="); Serial.print(manette.getZ()); // get X joystick droit (pivot)
+
+
+  // SRX = PIVOT X (A dans maj() ??)
+  // SLY = AVANCE/RECUL Y GAUCHE (B dans maj() ??)
+  // SLX = TRANSLATION X GAUCHE (C dans maj() ??)
+  /*
+  srx = 128;
+  sly = 128;
+  slx = 128;
+*/
+  motor.maj(sly, srx, slx);
+   
   motor.majsortie();
+
+//delay(3000);
+
+  	//pca.writeMicroseconds(0,2000); // Moteur 1 
+		//pca.writeMicroseconds(1,2000); // Moteur 2
+		//pca.writeMicroseconds(2,2000); // Moteur 3
+		//pca.writeMicroseconds(3,2000);  // Moteur 4
+
+
+
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////// FIN UTILISATION MANUELLE ////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
