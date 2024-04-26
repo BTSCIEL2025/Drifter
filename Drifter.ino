@@ -1,102 +1,50 @@
 /*
  Name:		Drifter.ino
  Created:	19/04/2024 09:43:12
- Author:	gab
 */
-
+// Importation des différentes libs
 #include <DigitalIO.h>
 #include <avr/pgmspace.h>
-#include "src/ManetteTest/Manette.h"
+#include "src/Manette/Manette.h"
+#include "src/Motor/Motor.h"
+Adafruit_PWMServoDriver pca = Adafruit_PWMServoDriver(0x40);
 
-PsxControllerBitBang<PIN_PS2_ATT, PIN_PS2_CMD, PIN_PS2_DAT, PIN_PS2_CLK> psx;
+//définitions des objets et des constantes/variables
+Manette manette;
+
+
+byte Manette::jlx = 0;
+byte Manette::jly = 0;
+byte Manette::jrx = 0;
+byte Manette::jry = 0;
+
+Motor motor(&pca);
+byte x = 0;
+byte y = 0;
+byte z = 0;
 
 void setup() {
+  Serial.begin(115200);
+  delay(300);
+  Serial.println("Début du setup -----------------------------------------");
 	fastPinMode(PIN_BUTTONPRESS, OUTPUT);
 	fastPinMode(PIN_HAVECONTROLLER, OUTPUT);
-
-	delay(300);
-
-	Serial.begin(115200);
+  manette.setupController();
+  motor.begin();
+	delay(1000);
+  Serial.println("Fin du setup -----------------------------------------\n");
 	Serial.println(F("Ready!"));
 }
 
 ///////////////////////////////////////////////////////////////////
 
 void loop() {
-	static byte slx, sly, srx, sry;   // declaration des variable pour les manches Left et right
 
-	fastDigitalWrite(PIN_HAVECONTROLLER, haveController);
+ 
+  delay(1000);
+  // motor.maj(jlx, jly, jrx);
+  // motor.majsortie();
 
-	if (!haveController)
-	{
-		if (psx.begin())
-		{
-			Serial.println(F("Controller found!"));
-			delay(300);
-			if (!psx.enterConfigMode())
-			{
-				Serial.println(F("Cannot enter config mode"));
-			}
-			else
-			{
-				PsxControllerType ctype = psx.getControllerType();
-				PGM_BYTES_P cname = reinterpret_cast<PGM_BYTES_P> (pgm_read_ptr(&(controllerTypeStrings[ctype < PSCTRL_MAX ? static_cast<byte> (ctype) : PSCTRL_MAX])));
-				Serial.print(F("Controller Type is: "));
-				Serial.println(PSTR_TO_F(cname));
 
-				if (!psx.enableAnalogSticks())
-				{
-					Serial.println(F("Cannot enable analog sticks"));
-				}
-
-				//~ if (!psx.setAnalogMode (false)) {
-					//~ Serial.println (F("Cannot disable analog mode"));
-				//~ }
-				//~ delay (10);
-
-				if (!psx.enableAnalogButtons())
-				{
-					Serial.println(F("Cannot enable analog buttons"));
-				}
-
-				if (!psx.exitConfigMode())
-				{
-					Serial.println(F("Cannot exit config mode"));
-				}
-			}
-			haveController = true;
-		}
-	}
-	else
-	{
-		if (!psx.read())
-		{
-			Serial.println(F("Controller lost :("));
-			haveController = false;
-		}
-		else
-		{
-			fastDigitalWrite(PIN_BUTTONPRESS, !!psx.getButtonWord());
-			dumpButtons(psx.getButtonWord());
-
-			byte lx, ly;
-			psx.getLeftAnalog(lx, ly);
-			if (lx != slx || ly != sly)
-			{
-				dumpAnalog("Left", lx, ly);
-				slx = lx;
-				sly = ly;
-			}
-
-			byte rx, ry;
-			psx.getRightAnalog(rx, ry);
-			if (rx != srx || ry != sry) {     // si different de la valeur pr�cedante
-				dumpAnalog("Right", rx, ry);   // on affiche
-				srx = rx;
-				sry = ry;
-			}
-		}
-	}
-	delay(1000 / 60);
 }
 

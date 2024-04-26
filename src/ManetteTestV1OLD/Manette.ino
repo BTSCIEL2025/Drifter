@@ -59,5 +59,13 @@ void dumpAnalog(const char* str, const byte x, const byte y) {
 	Serial.print(F(", y = "));
 	Serial.println(y);
 }
+void testDump(){
+  Serial.print("X : ");
+  Serial.print(getX());
+  Serial.print(" Y : ");
+  Serial.print(getY());
+  Serial.print(" Z : ");
+  Serial.println(getZ());
+}
 
 

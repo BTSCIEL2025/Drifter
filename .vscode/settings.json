@@ -1,0 +1,4 @@
+{
+    "genieai.openai.model": "gpt-3.5-turbo",
+    "C_Cpp.errorSquiggles": "disabled"
+}
