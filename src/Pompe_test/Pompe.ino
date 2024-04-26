@@ -6,6 +6,7 @@ Pompe::Pompe()
 	duree     = 3000;					  // Arrosera pendant 1 seconde
 	dateDebut = 0;					    // dtae du debut d'arrosage
 	enFct     = false;					// Pompe initialement eteinte
+  pwm = PMW;
 }
 
 
