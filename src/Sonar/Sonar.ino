@@ -14,14 +14,13 @@ using namespace std;
 Sonar::Sonar() {
 	etat = 0;
   orientation = 270;
-  dateDebut = 0;
+  dateDebut = millis();
   nbMesure = 10;
   intervalle = 200;
   avance = 0;
   feu = -1;
   sens = 1;
   nbTours = 0;
-  pwm = PMW;
 }
 
 //Constructeur comprennant les valeurs
@@ -30,9 +29,9 @@ Sonar::Sonar() {
 * int nbMes : Le nombre de mesures que l'on veut effectuer sur une rotation du moteur
 * int inter : L'intervalle en temps que l'on souhaite attendre entre chaque mesures
 */
-Sonar::Sonar(int angle, int nbMes, int inter) {
+Sonar::Sonar(int angle, int nbMes, int inter,Adafruit_PWMServoDriver *pwm) {
   etat = 0;
-  dateDebut = 0;
+  dateDebut = millis();
   orientation = angle;
   nbMesure = nbMes;
   intervalle = inter;
@@ -40,7 +39,7 @@ Sonar::Sonar(int angle, int nbMes, int inter) {
   feu = -1;
   sens = 1;
   nbTours = 0;
-  pwm = PMW;
+  pwm = pwm;
 }
 
 //Getteurs--------------------------------------------------------------------------------------------------
@@ -64,7 +63,7 @@ int Sonar::getLecture(int i) const
 	return lecture[i];
 }
 
-int Sonar::getDateDebut() const
+long Sonar::getDateDebut() const
 {
 	return dateDebut;
 }
@@ -115,7 +114,7 @@ void Sonar::setLecture(int rang, int val)
   this->lecture[rang] = val;
 }
 
-void Sonar::setDateDebut(int date)
+void Sonar::setDateDebut(long date)
 {
   this->dateDebut = date;
 }
@@ -156,15 +155,15 @@ int Sonar::pulseWidth(int angle) {
 
 void Sonar::miseOn(){
   setEtat(1);
-  pwm.begin(); 
-  pwm.setPWMFreq(FREQUENCY);
-  pwm.setPWM(CANALSERVO, 0, pulseWidth(0));  //on met le servo à l'angle 0     
-  setDateDebut(millis());           // on indique le temps du lancement
+  pwm->begin(); 
+  pwm->setPWMFreq(FREQUENCY);
+  pwm->setPWM(CANALSERVO, 0, pulseWidth(0));                      //on met le servo à l'angle 0     
+  setDateDebut(millis());                                         // on indique le temps du lancement
 }  
 
 void Sonar::miseOff(){
   setEtat(0);
-  pwm.setPWM(CANALSERVO, 0, pulseWidth(135));   // on le remet a son angle d'origine   
+  pwm->setPWM(CANALSERVO, 0, pulseWidth(135));   // on le remet a son angle d'origine   
   setSens(1);
 }   
 
@@ -179,16 +178,16 @@ void Sonar::maj(){
       setNbTour(getNbTour() + 1);
     }
     if(getSens()==1){
-      if(millis()>getDateDebut() + getAvance() * getIntervalle() + getNbTour() * getNbMesure() * getIntervalle()){                       //tps au lancement + tps pris pour le tour courant + tps pris par les tours passé
-        pwm.setPWM(CANALSERVO, 0, pulseWidth(getAvance() * (getOrientation() / getNbMesure())));                                                  //pulseWidth donne les °, combien-ième mesure * nb °dans une intervalle       
+      if(millis()>getDateDebut() + getAvance() * getIntervalle() + getNbTour() * getNbMesure() * getIntervalle()){                              //tps au lancement + tps pris pour le tour courant + tps pris par les tours passé
+        pwm->setPWM(CANALSERVO, 0, pulseWidth(getAvance() * (getOrientation() / getNbMesure())));                                               //pulseWidth donne les °, combien-ième mesure * nb °dans une intervalle       
         setLecture(getAvance(),lireLum());
-        setAvance(getAvance() + getSens());                                                                                                //on augmente de 1 si sens horaire et on diminue si anti-horaire
+        setAvance(getAvance() + getSens());                                                                                                     //on augmente de 1 si sens horaire et on diminue si anti-horaire
       }
-    }else{                                                                                                                                 //sens anti-horaire
-      if(millis()>getDateDebut() + (getNbMesure()-getAvance()) * getIntervalle() + getNbTour() * getNbMesure() * getIntervalle()){       //tps au lancement + tps pris pour le tour courant + tps pris par les tours passé
-        pwm.setPWM(CANALSERVO, 0, pulseWidth(getOrientation()-((getNbMesure()-getAvance()) * (getOrientation() / getNbMesure()))));                //pulseWidth donne les °, combien-ième mesure * nb °dans une intervalle       
+    }else{                                                                                                                                      //sens anti-horaire
+      if(millis()>getDateDebut() + (getNbMesure()-getAvance()) * getIntervalle() + getNbTour() * getNbMesure() * getIntervalle()){              //tps au lancement + tps pris pour le tour courant + tps pris par les tours passé
+        pwm->setPWM(CANALSERVO, 0, pulseWidth(getOrientation()-((getNbMesure()-getAvance()) * (getOrientation() / getNbMesure()))));            //pulseWidth donne les °, combien-ième mesure * nb °dans une intervalle       
         setLecture(getAvance(),lireLum());
-        setAvance(getAvance() + getSens());                                                                                                 //on augmente de 1 si sens horaire et on diminue si anti-horaire
+        setAvance(getAvance() + getSens());                                                                                                     //on augmente de 1 si sens horaire et on diminue si anti-horaire
       }
     }
   }
@@ -245,7 +244,5 @@ int Sonar::oFeu(){
   if(maxLum()-moyLum() > DELTAOFEU){
     setFeu(rangLumMax() * getOrientation() / getNbMesure());        //getOrientation / getNbMesure correspond à l'intervalle en degres entre deux mesures
   }
-  //Serial.println(maxLum());     //print
-  //Serial.println(moyLum());
   return getFeu();
 }
