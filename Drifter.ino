@@ -3,21 +3,24 @@
  Created:	19/04/2024 09:43:12
 */
 // Importation des différentes libs
-#include <DigitalIO.h>
 #include <Arduino.h>
+#include <DigitalIO.h>
+#include <avr/io.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #include <avr/pgmspace.h>
 #include "src/Manette/Manette.h"
 #include "src/Motor/Motor.h"
-#include "src/Ecran/Ecran.h"
-#include "src/Ecran/Automate.h"
-#include "src/Boutons/Bouton.h"
+#include "src/EAB/Automate.h"
+#include "src/EAB/Ecran.h"
+#include "src/EAB/Bouton.h"
 Adafruit_PWMServoDriver pca = Adafruit_PWMServoDriver(0x40);
 
 //////////////////////////////////// DEFINITIONS //////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
+#define NUM_DIGITAL_PINS 20
+
 Manette manette;
 Motor motor(&pca);
 Bouton monclav;
@@ -71,8 +74,13 @@ int transition = monclav.readButton();
         etat = monauto.getAutomValue(transition, etat);
     }
     
+
+
+  /*
+
     switch(etat) {
       case 6:
+      */
 ////////////////////////////////////////////////////////////////
 /////////// DEPLACEMENT MANUEL (MANETTE ET MOTEURS) ///////////
 ////////////////////////////////////////////////////////////////
@@ -179,13 +187,13 @@ int transition = monclav.readButton();
 //////////////////////////////////////// FIN UTILISATION MANUELLE ////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+/*
         break;
       case 9:
 
         break;
-    }
-    monecran.erase(); 
+    }*/
+    monecran.erase();
     monecran.afficher(etat);
     Serial.println(etat);
 

@@ -1,8 +1,16 @@
-#include "Bouton.h"
-#include "Ecran.h"
+#ifndef BOUTON_H
+#define BOUTON_H
 #include <Arduino.h>
+#include "Ecran.h"
 
-int Bouton::readButton() {
+#define buttonPin A3 // Broche pour les boutons
+
+class Bouton
+{
+private:
+
+public:
+    int readButton() {
     int analogValue = analogRead(buttonPin);
 
     // Déterminer quel bouton est appuyé en fonction de la tension lue
@@ -30,3 +38,6 @@ int Bouton::readButton() {
         return -1; // Aucun bouton détecté
     }
 }
+
+};
+#endif
