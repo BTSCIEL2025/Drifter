@@ -1,35 +1,14 @@
 #include "Gyro.h"
+#define PMW Adafruit_PWMServoDriver(0x40)
 
-Gyro mongyro;
+
+Gyro test = Gyro();
+
 void setup()
 {
-pinMode(A0,OUTPUT);
-Serial.begin(115200);
+  Serial.begin(115200);
+  test.miseOn();
 }
 void loop()
 {
-// lecture des entrées
-
-
-
-
-// traitement et affectations des objets
-
-
-
-
-// affectation des sorties
-
-
-
-
-mongyro.marche();
-  Serial.println("JE SUIS LA");
-  mongyro.setdOn(1000);
-	delay(mongyro.getdOn());
-
-mongyro.arret();
-  Serial.println("JE SUIS PAS LA");
-  mongyro.setdOff(1000);
-	delay(mongyro.getdOff());
 }
