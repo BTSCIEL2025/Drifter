@@ -21,7 +21,6 @@ que le reste et nous indiquer la zone en degr�.
 #define MIN_PULSE_WIDTH  600   //  Largeur minimum de l'impulsion: pour puissance minimum
 #define MAX_PULSE_WIDTH 2600   //  Largeur maximum de l'impulsion : pour Puissance max
 #define FREQUENCY        50    //  50hz d'origine.
-#define PMW Adafruit_PWMServoDriver(0x40)
 
 #define MAX_VAL 40
 #define PIN_CAPT_LUM A1
@@ -34,14 +33,14 @@ class Sonar
 public:
 	// Constructeurs
 	Sonar();                //initialisé à 10 valeurs sur 270°
-	Sonar(int, int, int);   //angle de rotation max du servo,nbr de mesures voulue par tour, intervalle de temps entre chaque mesure
+	Sonar(int, int, int,Adafruit_PWMServoDriver*);   //angle de rotation max du servo,nbr de mesures voulue par tour, intervalle de temps entre chaque mesure
 
 	// Getters
   int getOrientation() const;
 	bool getEtat() const;
   int getNbMesure() const;
 	int getLecture(int) const;  //le rang du tableau voulu en paramètre
-	int getDateDebut() const;
+	long getDateDebut() const;
 	int getIntervalle() const;
 	int getAvance() const;
   int getFeu() const;
@@ -53,7 +52,7 @@ public:
 	void setEtat(bool);
   void setNbMesure(int);
 	void setLecture(int,int);
-	void setDateDebut(int);
+	void setDateDebut(long);
 	void setIntervalle(int);
 	void setAvance(int);
   void setFeu(int);
@@ -78,12 +77,12 @@ private:
 	int orientation;	      //en degr?s
   int nbMesure;           //nombre de mesures effectuée sur une rotation
 	int lecture[MAX_VAL];	  //tableau contenant les valeurs lues
-	int dateDebut;	        //en ms
+	long dateDebut;	        //en ms
 	int intervalle;		      //en ms
 	int avance;			        //combien de mesures ont deja �t� faites
   int feu;                //indique l'angle du feu, -1 si il n'y a pas le feu
   int sens;               //horaire 1 ou anti-horaire -1
   int nbTours;            //Nombre de tours complets qu'a fait le sonar 
-  Adafruit_PWMServoDriver pwm; //variable nécésaire au servo moteur
+  Adafruit_PWMServoDriver *pwm; //variable nécésaire au servo moteur
 };
 #endif // !SONAR_H

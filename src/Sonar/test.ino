@@ -1,6 +1,8 @@
 using namespace std;
 
 #include "Sonar.h"
+#define PMW Adafruit_PWMServoDriver(0x40)
+
 
 int light = 0; // intitialise la valeur de la lumière
 Sonar test = Sonar();
