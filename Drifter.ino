@@ -4,16 +4,28 @@
 */
 // Importation des différentes libs
 #include <DigitalIO.h>
+#include <Arduino.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
 #include <avr/pgmspace.h>
 #include "src/Manette/Manette.h"
 #include "src/Motor/Motor.h"
+#include "src/Ecran/Ecran.h"
+#include "src/Ecran/Automate.h"
+#include "src/Boutons/Bouton.h"
 Adafruit_PWMServoDriver pca = Adafruit_PWMServoDriver(0x40);
 
 //////////////////////////////////// DEFINITIONS //////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////
 Manette manette;
 Motor motor(&pca);
+Bouton monclav;
+Ecran monecran;
+Automate monauto;
 
+unsigned long lastTransitionTime = 0;
+const unsigned long debounceDelay = 200;
 //////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////
 
@@ -21,6 +33,9 @@ void setup() {
   Serial.begin(115200);
   delay(300);
   Serial.println("Début du setup -----------------------------------------");
+    // INITIALISATION ECRAN OLED
+  monecran.initial();
+  monecran.erase();
 
   // INITIALISATION MOTEURS ET MANETTE 
 	fastPinMode(PIN_BUTTONPRESS, OUTPUT);
@@ -30,10 +45,9 @@ void setup() {
   //FIN INTIALISATION MOTEURS ET MANETTE
 
 	delay(1000);
-  // arret des moteurs:
+  // arret des moteurs(128 étant le point 0):
   motor.maj(128, 128, 128);
   motor.majsortie();
-
 
   Serial.println("Fin du setup -----------------------------------------\n");
 	Serial.println(F("Ready!"));
@@ -43,6 +57,22 @@ void setup() {
 
 void loop() {
 
+////////////////////////////////////////////////////////////////
+////// AFFICHAGE ECRAN (ECRAN ET BOUTON ET AUTOMATE) ///////////
+////////////////////////////////////////////////////////////////
+
+int transition = monclav.readButton();
+    static int etat = 0;
+    static int lastTransition = -1;
+
+    // Mettre à jour l'état de l'automate en fonction de la transition du bouton
+    if (transition != -1 && (millis() - lastTransitionTime) > debounceDelay) {
+        lastTransitionTime = millis();
+        etat = monauto.getAutomValue(transition, etat);
+    }
+    
+    switch(etat) {
+      case 6:
 ////////////////////////////////////////////////////////////////
 /////////// DEPLACEMENT MANUEL (MANETTE ET MOTEURS) ///////////
 ////////////////////////////////////////////////////////////////
@@ -145,11 +175,20 @@ void loop() {
 
 
 
-
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////// FIN UTILISATION MANUELLE ////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+        break;
+      case 9:
+
+        break;
+    }
+    monecran.erase(); 
+    monecran.afficher(etat);
+    Serial.println(etat);
+
 
 
 //end loop
