@@ -176,8 +176,10 @@ private:
     void updateJoystickValues() {
       byte lx, ly;
       controller.getLeftAnalog(lx, ly);  // Directly get values
-      Serial.print("Left X: "); Serial.println(lx);
-      Serial.print("Left Y: "); Serial.println(ly);
+      //Assigns values to 
+      Serial.print(lx);
+      Serial.print("  ");
+      Serial.print(ly);
       //slx = lx;
       //sly = ly;
 }

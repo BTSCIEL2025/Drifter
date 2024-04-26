@@ -40,15 +40,10 @@ void setup() {
 
 void loop() {
 
-  byte jlx, jly;
-
-  byte z = manette.getZ();
-  Serial.println(manette.controller.getLeftAnalog(jlx, jly));
-  Serial.println(manette.getY());
-  Serial.println(manette.getZ());
-  motor.maj(x, y, z);
+ 
   delay(1000);
-  motor.majsortie();
+  // motor.maj(jlx, jly, jrx);
+  // motor.majsortie();
 
 
 }

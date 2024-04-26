@@ -29,10 +29,10 @@ public:
 		somme[1] = A + B - C;   Sortie_Pwm[1] = map(somme[1], 0, 255, MIN_IMP[1], MAX_IMP[1]);
 		somme[2] = A - B - C;   Sortie_Pwm[2] = map(somme[2], 0, 255, MIN_IMP[2], MAX_IMP[2]);
 		somme[3] = A - B + C;   Sortie_Pwm[3] = map(somme[3], 0, 255, MIN_IMP[3], MAX_IMP[3]);
-		Serial.println(Sortie_Pwm[0]);
+		/*Serial.println(Sortie_Pwm[0]);
 		Serial.println(Sortie_Pwm[1]);
 		Serial.println(Sortie_Pwm[2]);
-		Serial.println(Sortie_Pwm[3]);
+		Serial.println(Sortie_Pwm[3]);*/
 	}
 	void majsortie() {  
 		// Afficher les 4 Sortie_Pwm dans le moniteur série
