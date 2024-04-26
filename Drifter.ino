@@ -12,9 +12,9 @@
 #include <avr/pgmspace.h>
 #include "src/Manette/Manette.h"
 #include "src/Motor/Motor.h"
-#include "src/Ecran/Automate.h"
-#include "src/Ecran/Ecran.h"
-#include "src/Bouton/Bouton.h"
+#include "src/EAB/Automate.h"
+#include "src/EAB/Ecran.h"
+#include "src/EAB/Bouton.h"
 Adafruit_PWMServoDriver pca = Adafruit_PWMServoDriver(0x40);
 
 //////////////////////////////////// DEFINITIONS //////////////////////////////////////////////
@@ -74,8 +74,13 @@ int transition = monclav.readButton();
         etat = monauto.getAutomValue(transition, etat);
     }
     
+
+
+  /*
+
     switch(etat) {
       case 6:
+      */
 ////////////////////////////////////////////////////////////////
 /////////// DEPLACEMENT MANUEL (MANETTE ET MOTEURS) ///////////
 ////////////////////////////////////////////////////////////////
@@ -182,13 +187,13 @@ int transition = monclav.readButton();
 //////////////////////////////////////// FIN UTILISATION MANUELLE ////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+/*
         break;
       case 9:
 
         break;
-    }
-    monecran.erase(); 
+    }*/
+    monecran.erase();
     monecran.afficher(etat);
     Serial.println(etat);
 
